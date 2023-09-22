@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 webhookUrl = 'https://hooks.zapier.com/hooks/catch/15130199/3iulwew/'
 
-function CallZap(id){
+async function CallZap(id){
 
     apiData = ""
 
@@ -24,23 +24,25 @@ function CallZap(id){
       'Authorization': apiKey,
     };
     
-    axios.post(apiUrl, { query }, { headers })
-      .then(response => {
+    await axios.post(apiUrl, { query }, { headers }).then(response => {
         const apiData = response.data;
-        console.log(JSON.stringify(apiData, null, 2));
+        Cdata = {
+            "email":`${apiData.data.boards[0].items[0].column_values[4].text}`,
+            "phone":`${apiData.data.boards[0].items[0].column_values[5].text}`
+        };
+        console.log(Cdata);
+        axios.post(webhookUrl, Cdata)
+      .then(function (response) {
+        console.log('Webhook sent successfully:', response.data);
       })
-      .catch(error => {
+      .catch(function (error) {
+        console.error('Error sending webhook:', error);
+      });
+        console.log(JSON.stringify(apiData, null, 2));
+      }).catch(error => {
         console.error('Error:', error);
       });
     
-   
-   axios.post(webhookUrl, apiData)
-  .then(function (response) {
-    console.log('Webhook sent successfully:', response.data);
-  })
-  .catch(function (error) {
-    console.error('Error sending webhook:', error);
-  });
 
 }
 
