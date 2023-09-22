@@ -13,22 +13,26 @@ webhookUrl = 'https://hooks.zapier.com/hooks/catch/15130199/3iulwew/'
 
 function CallZap(id){
 
-    let query = `{
-        "query": "query {boards(ids: 1802223826) {items(ids: ${id}) {column_values {value text}}}}" 
-     }`;
     apiData = ""
-fetch ("https://api.monday.com/v2", {
-  method: 'post',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization' : 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI2MDMwMzMwNywiYWFpIjoxMSwidWlkIjo0MzM5NDcyNiwiaWFkIjoiMjAyMy0wNi0wM1QwMTowOTozMS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY5NjAwNzUsInJnbiI6ImFwc2UyIn0.JFILgXE6wJbSqzXMe_2hSTGgVpHPmaadWzdmFdDKzVs'
-   },
-   body: JSON.stringify({
-     query : query
-   })
-  })
-   .then(res => res.json())
-   .then(res => console.log(JSON.stringify(res, null, 2))).then(apiData = res);
+
+    const apiUrl = 'https://api.monday.com/v2';
+    const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI2MDMwMzMwNywiYWFpIjoxMSwidWlkIjo0MzM5NDcyNiwiaWFkIjoiMjAyMy0wNi0wM1QwMTowOTozMS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY5NjAwNzUsInJnbiI6ImFwc2UyIn0.JFILgXE6wJbSqzXMe_2hSTGgVpHPmaadWzdmFdDKzVs'; // Replace with your API key
+    const query = `query {boards(ids: 1802223826) {items(ids: ${id}) {column_values {value text}}}}`; // Replace with your GraphQL query
+    
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': apiKey,
+    };
+    
+    axios.post(apiUrl, { query }, { headers })
+      .then(response => {
+        const apiData = response.data;
+        console.log(JSON.stringify(apiData, null, 2));
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    
    
    axios.post(webhookUrl, apiData)
   .then(function (response) {
