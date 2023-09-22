@@ -15,21 +15,19 @@ function CallZap(id){
     let query = `{
         "query": "query {boards(ids: 1802223826) {items(ids: ${id}) {column_values {value text}}}}" 
      }`;
-    apiData = "";
-
-   apiUrl = "https://api.monday.com/v2";
-   const headers = {
+    apiData = ""
+fetch ("https://api.monday.com/v2", {
+  method: 'post',
+  headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI2MDMwMzMwNywiYWFpIjoxMSwidWlkIjo0MzM5NDcyNiwiaWFkIjoiMjAyMy0wNi0wM1QwMTowOTozMS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY5NjAwNzUsInJnbiI6ImFwc2UyIn0.JFILgXE6wJbSqzXMe_2hSTGgVpHPmaadWzdmFdDKzVs',
-  };
-   axios.post(apiUrl, { query }, { headers })
-  .then(response => {
-    const apiData = response.data;
-    console.log(JSON.stringify(apiData, null, 2));
+    'Authorization' : 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI2MDMwMzMwNywiYWFpIjoxMSwidWlkIjo0MzM5NDcyNiwiaWFkIjoiMjAyMy0wNi0wM1QwMTowOTozMS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY5NjAwNzUsInJnbiI6ImFwc2UyIn0.JFILgXE6wJbSqzXMe_2hSTGgVpHPmaadWzdmFdDKzVs'
+   },
+   body: JSON.stringify({
+     query : query
+   })
   })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+   .then(res => res.json())
+   .then(res => console.log(JSON.stringify(res, null, 2))).then(apiData = res);
    
    axios.post(webhookUrl, apiData)
   .then(function (response) {
@@ -48,7 +46,7 @@ app.post('/webhook', (req, res) => {
     const webhookData = req.body;
     console.log(JSON.stringify(req.body, 0, 2))
     console.log('Received webhook data:', webhookData);
-    console.log('PulseId:', webhookData.event.pulseId);
+    console.log('PulseId:',webhookData.event.pulseId );
 
     // Add your custom logic here to process the webhook data
     CallZap(webhookData.event.pulseId)
