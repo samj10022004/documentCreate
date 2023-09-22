@@ -15,19 +15,21 @@ function CallZap(id){
     let query = `{
         "query": "query {boards(ids: 1802223826) {items(ids: ${id}) {column_values {value text}}}}" 
      }`;
-    apiData = ""
-fetch ("https://api.monday.com/v2", {
-  method: 'post',
-  headers: {
+    apiData = "";
+
+   apiUrl = "https://api.monday.com/v2";
+   const headers = {
     'Content-Type': 'application/json',
-    'Authorization' : 'YOUR_API_KEY_HERE'
-   },
-   body: JSON.stringify({
-     query : query
-   })
+    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI2MDMwMzMwNywiYWFpIjoxMSwidWlkIjo0MzM5NDcyNiwiaWFkIjoiMjAyMy0wNi0wM1QwMTowOTozMS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY5NjAwNzUsInJnbiI6ImFwc2UyIn0.JFILgXE6wJbSqzXMe_2hSTGgVpHPmaadWzdmFdDKzVs',
+  };
+   axios.post(apiUrl, { query }, { headers })
+  .then(response => {
+    const apiData = response.data;
+    console.log(JSON.stringify(apiData, null, 2));
   })
-   .then(res => res.json())
-   .then(res => console.log(JSON.stringify(res, null, 2))).then(apiData = res);
+  .catch(error => {
+    console.error('Error:', error);
+  });
    
    axios.post(webhookUrl, apiData)
   .then(function (response) {
