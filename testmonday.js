@@ -4,12 +4,13 @@ const axios = require('axios');
 const fetch = require('fetch');
 
 const app = express();
-const port = 3150; // You can choose any available port
+const port = 3001; // You can choose any available port
 
 // Middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
-webhookUrl = 'https://hooks.zapier.com/hooks/catch/15130199/39qmsl8/'
+webhookUrl = 'https://hooks.zapier.com/hooks/catch/15130199/39qmsl8/';
+webhookUr2 = 'https://hooks.zapier.com/hooks/catch/15130199/3r1tigs/';
 
 async function CallZap(id){
 
@@ -32,6 +33,7 @@ async function CallZap(id){
         };
         console.log(Cdata);
         axios.post(webhookUrl, Cdata)
+        axios.post(webhook2Url,Cdata)
       .then(function (response) {
         console.log('Webhook sent successfully:', response.data);
       })
