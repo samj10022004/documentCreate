@@ -11,7 +11,7 @@ const port = 3150; // You can choose any available port
 app.use(bodyParser.json());
 
 webhookUrl = 'https://hooks.zapier.com/hooks/catch/15130199/39qmsl8/';
-webhookUr2 = 'https://hooks.zapier.com/hooks/catch/15130199/3r1tigs/';
+webhook2Url = 'https://hooks.zapier.com/hooks/catch/15130199/3r1tigs/';
 
 async function CallZap(id){
 
