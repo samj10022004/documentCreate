@@ -56,10 +56,10 @@ app.post('/webhook', (req, res) => {
     const webhookData = req.body;
     console.log(JSON.stringify(req.body, 0, 2))
     console.log('Received webhook data:', webhookData);
-    console.log('PulseId:',webhookData.event.pulseId );
+    //console.log('PulseId:',webhookData.event.pulseId );
 
     // Add your custom logic here to process the webhook data
-    CallZap(webhookData.event.pulseId)
+   // CallZap(webhookData.event.pulseId)
     // Send a response with a 200 OK status code
     res.status(200).send(req.body);
   } catch (error) {
