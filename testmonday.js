@@ -29,8 +29,8 @@ async function CallZap(id){
     await axios.post(apiUrl, { query }, { headers }).then(response => {
         const apiData = response.data;
         Cdata = {
-            "email":`${apiData.data.boards[0].items[0].column_values[4].text}`,
-            "phone":`${apiData.data.boards[0].items[0].column_values[5].text}`
+            "email":`${apiData.data.boards[0].items[0].column_values[5].text}`,
+            "phone":`${apiData.data.boards[0].items[0].column_values[6].text}`
         };
         console.log(Cdata);
         axios.post(webhookUrl, Cdata)
